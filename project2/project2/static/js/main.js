@@ -40,16 +40,6 @@ var MainModule = (function () {
       }, 500);
     }).scroll();
 
-    // var floatPosition2 = parseInt($(".slide_wrap").css('top'));
-    // $(window).scroll(function() {
-    //   var scrollTop = $(window).scrollTop();
-    //   var newPosition = scrollTop + floatPosition2 + "px";
-    //   $(".slide_wrap").stop().animate({
-    //     "top": newPosition
-    //   }, 500);
-    // }).scroll();
-    
-
     function closePopEvent() {
         $('.pop_bg').hide();
         $(this).closest('.pop_wrap').hide();
