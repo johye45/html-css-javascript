@@ -30,7 +30,7 @@ var MovieModule = (function () {
     var USER_ID;
     var USER_LEVEL;
     var SPEACIAL_USER_LV = 40
-    var RAMDOM_TOKEN = Math.floor((Math.random() * 100000000))
+    var RAMDOM_TOKEN = Math.floor((Math.random() * 100000000))//0~99999999까지의 난수 지정
     var IS_PASS_TIME_ID_ARR = ['117','113']
     console.log(LIMIT_DATE, NOW_DATE, LIMIT_DATE < NOW_DATE)
     var CHANGE_TIMER;
@@ -46,7 +46,7 @@ var MovieModule = (function () {
         //     location.replace('./list.html');
         //     return false;
         // }
-        VOD_ID = MainModule.getUrlParameter('id');
+        VOD_ID = MainModule.getUrlParameter('id');// id값 반환
         // if (VOD_ID == '' || VOD_ID == null || VOD_ID == undefined) {
         //     alert(ALERT_TEXT_OBJ.basic[0]);
         //     location.replace('./list.html');
@@ -76,13 +76,14 @@ var MovieModule = (function () {
 
         // 성공시 동작
         $.ajax(settings).done(function (response) {
-            // console.log(response);
+            //console.log("response: ",response);
+            
             var server_time = response.server_time
             if(response.app_id != 4){
                 alert('이벤트에 연결되어있지 않은 회원입니다.');
-                location.replace('./index.html')
+                location.replace('./index.html');//기존페이지를 새로운 index.html 로 변경시킨다
             }
-            var is_access = false;
+            var is_access = false;//지정된 유저
             for(var i=0;i<ACCESS_USER_ARR.length;i++){
                 if(ACCESS_USER_ARR[i].name == response.name && ACCESS_USER_ARR[i].phone == response.phone){
                     is_access = true;
@@ -97,15 +98,15 @@ var MovieModule = (function () {
             }
             USER_ID = response.id;
             USER_LEVEL = response.admin_level;//관리자 
-            var user_cnt_el = document.querySelector('.js-user_count');
+            var user_cnt_el = document.querySelector('.js-user_count');//접속자수  user_cnt_el/3000
             if (user_cnt_el != null && user_cnt_el != '' && user_cnt_el != undefined) {
                 var user_count_number = Number(response.active_user_count);
                 user_count_number = (user_count_number > 3000) ? 3000 : (user_count_number < 1) ? 1 : user_count_number
                 user_cnt_el.innerText = user_count_number;
             }
-            websocketVod();
+            websocketVod();//다중접속자
             checkMultiLogin()
-        }).fail(function (response) {
+        }).fail(function (response) {//실패시 
             if (response.status === 401) {
                 alert(ALERT_TEXT_OBJ.basic[4]);
                 location.replace('./index.html')
@@ -115,10 +116,11 @@ var MovieModule = (function () {
         });
     }
 
+    //하나의 아이디에 RANDOM_TOKEN을 정의해준다    
     function checkMultiLogin() {
         // console.log(RAMDOM_TOKEN,'dddd')
         var data_obj = {
-            'event_id' : 4,
+            'event_id' : 4,//app_id와는 다르다
             'token' : RAMDOM_TOKEN
         }
         var settings = {
@@ -134,10 +136,13 @@ var MovieModule = (function () {
         });
     }
 
+    //하나의 아이디로 다른 영상을 동시 시청 할 수 없도록 방지하기 위해서!(E-poster, E-booth는 중복된 아이디 가능)
     function websocketVod(){
         // console.log('check multi login')
+                    //서버에서 받을 이벤트명, function(data){} 
+                    //data = 서버에서 날아온 data를 의미하고 checkMultiLogin의 "data"와 다르다
         socket.on("duplication_vod_access_check:user_id_"+USER_ID+".event_id_4:App\\Events\\DuplicationVODAccessCheck", function (data) { //다중접속체크
-            // console.log(data)
+            console.log("data: ",data);
             if(data.token != RAMDOM_TOKEN){
                 alert('다중 접속으로 강의를 시청하실 수 없습니다.');
                 location.replace('./list.html');
@@ -153,8 +158,8 @@ var MovieModule = (function () {
         };
 
         $.ajax(settings).done(function (response) {
-            // console.log(response);
-            if(response.category_type == 1 && SPEACIAL_USER_LV != USER_LEVEL){
+            console.log("response: ",response);
+            if(response.category_type == 1 && SPEACIAL_USER_LV != USER_LEVEL){//SPEACIAL_USER_LV=관리자페이지에서 지정된 40level
                 alert('권한이 없습니다.');
                 location.replace('./list.html');
                 return false;
@@ -168,6 +173,7 @@ var MovieModule = (function () {
                 document.getElementById('lecture_movie').innerHTML = '<source src="' + vod_url + response.file_1 + '" type="video/mp4">'
                 // document.getElementById('lecture_movie').innerHTML = '<source src="./static/images/test_video_01.mp4" type="video/mp4">'
                 console.log('처음 불러올 링크 >> ', MOVIE_URL_ARR[load_url_num]+ response.file_1);
+                console.log("response.file_1",response.file_1);
                 THIS_VOD_URL = response.file_1;
                 // var PROF_VALUE_ARR = ['title', 'summary', 'email','email_en']
                 var PROF_VALUE_ARR = ['title']
@@ -178,9 +184,11 @@ var MovieModule = (function () {
                     }
                 }
                 document.querySelector('.js-prof_info').innerHTML = info_html
-                currentTime = response.watch_time
-                maxTime = response.watch_time
-                post_watch_time = maxTime
+
+                currentTime = response.watch_time//현재 내가 보고 있는 영상 시간 저장
+                console.log("watch_time",response.watch_time);
+                maxTime = response.watch_time//내가 본 최대 영상 시간 저장(저장한 이유: currentTime이 도중에 변경되어도 최대값을 유지하기 위해서 )
+                post_watch_time = maxTime//서버에 전송된 쵀대 시간 저장
                 if (response.is_exam_passed === 1) {//exam 완료했는지 안했는지 판별하기
                     exam_end = true
                     // console.log('문제풀이 완료!')
@@ -414,7 +422,7 @@ var MovieModule = (function () {
                 "timeout": 0,
                 "data": data_obj
             };
-
+            console.log("data_obj",data_obj)
             $.ajax(settings).done(function (response) {
                 // console.log(response);
                 if (response.is_finished === 1) {
@@ -432,6 +440,7 @@ var MovieModule = (function () {
                         
                         $.ajax(settings).done(function (response) {
                           console.log(response);
+                          console.log("data:",data);
                         }).fail(function (response) {
                             alert(ALERT_TEXT_OBJ.basic[2] + response.status);
                             location.reload();

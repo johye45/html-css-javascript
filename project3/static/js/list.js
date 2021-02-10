@@ -134,6 +134,7 @@ var ListModule = (function () {
             "timeout": 0,
             "data": data_obj
         };
+     
         $.ajax(settings).done(function (response) {
             console.log(response)
             var html = ''

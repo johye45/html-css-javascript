@@ -87,8 +87,11 @@ var MainModule = (function () {
         var str_param = '';
         var url_arr = now_url.split('?').pop().split('&');
         for (var i = 0; i < url_arr.length; i++) {
-            if (url_arr[i].indexOf(str) !== -1) {
-                str_param = url_arr[i].split('=').pop();
+            if (url_arr[i].indexOf(str) !== -1) {//-1이 아니면 즉 true이면 
+                //indexOf('id')가 일치하는 문자열이 없으면 -1반환(false)
+
+                //만약 id=30 이라면 30 리턴됨, str_param = 30
+                str_param = url_arr[i].split('=').pop();//=을 기준으로 마지막 요소 리턴 
                 break;
             }
         }
