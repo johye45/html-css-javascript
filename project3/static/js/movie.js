@@ -185,16 +185,19 @@ var MovieModule = (function () {
                 }
                 document.querySelector('.js-prof_info').innerHTML = info_html
 
+                /*영상 시간 지정하기*/
                 currentTime = response.watch_time//현재 내가 보고 있는 영상 시간 저장
                 console.log("watch_time",response.watch_time);
                 maxTime = response.watch_time//내가 본 최대 영상 시간 저장(저장한 이유: currentTime이 도중에 변경되어도 최대값을 유지하기 위해서 )
-                post_watch_time = maxTime//서버에 전송된 쵀대 시간 저장
+                post_watch_time = maxTime//서버에 전송된 쵀대 시간 저장(10초단윌 서버와 통신)
+
                 if (response.is_exam_passed === 1) {//exam 완료했는지 안했는지 판별하기
+                    console.log("문제 통과 여부: ",response.is_exam_passed);
                     exam_end = true
                     // console.log('문제풀이 완료!')
-                    document.getElementById('examBtn').classList.add('active');
+                    document.getElementById('examBtn').classList.add('active');//새로운 클래스 추가
                 } else {
-                    document.getElementById('examBtn').style.display = ''
+                    document.getElementById('examBtn').style.display = ''//비활성화
                 }
                 if (response.is_finished === 1) {
                     currentTime = 0;
