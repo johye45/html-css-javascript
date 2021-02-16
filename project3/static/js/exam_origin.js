@@ -23,7 +23,7 @@ var ExamModule = (function () {
         }
         eventBind();
         getVODDetail();
-        getMyInfo()
+        getMyInfo();
     }
 
     function eventBind() {
