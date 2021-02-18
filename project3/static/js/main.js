@@ -48,6 +48,7 @@ var MainModule = (function () {
         document.body.style.overflow = 'auto';
     }
 
+    //팝업 가운데로
     function popVerticalMiddle(type) {
         $('.pop_bg').show();
 

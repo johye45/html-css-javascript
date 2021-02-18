@@ -136,7 +136,7 @@ var IndexModule = (function () {
             var code_el = document.getElementById('token');
             var login_btn_el = document.getElementById('submit');
             code_el.removeAttribute('readonly');
-            login_btn_el.style.display = ''
+            login_btn_el.style.display = ''//display속성이 자동으로 none되어있기 때문에 속성을 지우기 위해서!
         }).fail(function (response) {
             var input_els = document.querySelectorAll('.login_form input[type="text"]');
             for (var i = 0; i < input_els.length; i++) {

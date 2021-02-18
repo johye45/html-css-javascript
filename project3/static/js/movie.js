@@ -328,7 +328,7 @@ var MovieModule = (function () {
 
             // console.log("is_first_play1:",is_first_play);
             myPlayer.on('play',function(e){
-                if(is_first_play === true){//첫번째 재싱 시점 true
+                if(is_first_play === true){//첫번째 재생 시점 true
                     is_first_play = false;
                     myPlayer.currentTime(currentTime);
                 }
@@ -366,7 +366,7 @@ var MovieModule = (function () {
             });
         });
         videojs.options.autoplay = true
-        updateCurrentTime()
+        updateCurrentTime();//현재 vod재생 시간
         // 출처 - https://blog.naver.com/nanan75/221657098392
         // 앞으로감기시, 최대로 본곳까지는 앞으로 감기 가능하도록 maxTime으로 변경
     }
@@ -512,7 +512,7 @@ var MovieModule = (function () {
                 break
             }
             load_url_num = (Math.floor((Math.random() * 3) + 0));//3개중 랜덤하게 
-        } while (USED_NUM_ARR.indexOf(load_url_num) !== -1);//일치하는 문자열이 없으면 -1반환--> 
+        } while (USED_NUM_ARR.indexOf(load_url_num) !== -1);//일치하는 문자열이 없으면 -1반환--> USED_NUM_ARR와 load_url_num 일치할 경우 다시 배정
         USED_NUM_ARR.push(load_url_num);
         // console.log(load_url_num, USED_NUM_ARR);
         // console.log('다음에 불러올 링크 >> ', MOVIE_URL_ARR[load_url_num]);
@@ -526,11 +526,11 @@ var MovieModule = (function () {
         settingVideo();
     }
 
-
+    //초기화 이후에도 계속 사용해야 하는 변수들만 객체에 담아 전달
     return {
         init: init
     };
-})();
+})();//모듈화
 (function () {
     MovieModule.init();
 })();
