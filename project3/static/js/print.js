@@ -1,4 +1,5 @@
 var PrintModule = (function () {
+    /*수료증 출력하기*/ 
     var $root
     var TOTAL_TIME = 0;
     var IS_COMPLETE_TIME = 14400 //14400 : 4시간 > 초단위
@@ -76,14 +77,14 @@ var PrintModule = (function () {
             html += '    </div>'
             html += '</div>'
             document.querySelector('.js-print').innerHTML = html;
-            if (is_print === true) {
-                var isFirefox = typeof InstallTrigger !== 'undefined';
-                if(isFirefox){
-                    alert('firefox 브라우저는 프린트기능을 지원하지 않습니다.\n다른 브라우저를 이용해주세요.');
-                    return false;
-                }
-                window.print();
-            }
+            // if (is_print === true) {
+            //     var isFirefox = typeof InstallTrigger !== 'undefined';
+            //     if(isFirefox){
+            //         alert('firefox 브라우저는 프린트기능을 지원하지 않습니다.\n다른 브라우저를 이용해주세요.');
+            //         return false;
+            //     }
+            //     window.print();
+            // }
         }).fail(function (response) {
             if (response.status === 401) {
                 alert(ALERT_TEXT_OBJ.basic[4]);
@@ -126,3 +127,5 @@ var PrintModule = (function () {
 (function () {
     PrintModule.init();
 })();
+
+

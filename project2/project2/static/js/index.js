@@ -13,6 +13,9 @@ var IndexModule = (function () {
     var cookiedata;
     function init() {
         $root = $('.wrap');
+
+        
+
         setDday();
         eventBind();
         speakerSlider();
@@ -266,6 +269,8 @@ var IndexModule = (function () {
                 alert(ALERT_TEXT_OBJ.basic[3]);
             } else if (response.status === 412) {
                 alert(ALERT_TEXT_OBJ.login[7]);
+            }else if (response.status === 413) {
+                alert(ALERT_TEXT_OBJ.login[9]);
             } else {
                 alert(ALERT_TEXT_OBJ.basic[2] + response.status);
             }
@@ -300,7 +305,7 @@ var IndexModule = (function () {
     $(document).ready(function(){
         cookiedata = document.cookie;
         console.log(cookiedata);
-
+        MainModule.popVerticalMiddle(0);//팝업창 가운데 정렬
          if(cookiedata.indexOf("close=done")<0){
              document.getElementById("popup_bg").style.display="block";
              document.getElementById("popup").style.display="block";
@@ -312,7 +317,7 @@ var IndexModule = (function () {
              console.log("pop up hide");
          }
 
-         $("#close").click(function(){
+         $(".close").click(function(){
              //alert("닫기?");
              popupClose();
          });

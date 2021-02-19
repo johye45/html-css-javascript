@@ -210,10 +210,10 @@ var ListModule = (function () {
                         }
                     }
                 }else{//두번째부터 접속 시도시 기존의 main_category_id값 유지하므로 영상 시청후 뒤로가기해도 해당 main_category_id를 유지한다
-                    if(main_category_id == 11){//우수보철강의인 경우
+                    if(main_category_id == 11){//우수보철강의인 경우에만
                         document.querySelector('.js-abstract_list').style.display = 'none' //초록집 다운로드 list 가리기
                     }
-                    //우수보철 강의가 아니면
+                    
                     nav_check_el.classList.add('active');//main category 선택시 active클래스 추가
                     $('.js-section').eq(0).attr('data-color',$('.js-nav[data-id="'+main_category_id+'"]').index('.js-nav'))
                     if(sub_category_id != ''){//sub category값이 있으면 
@@ -622,7 +622,7 @@ var ListModule = (function () {
             for (var i = 0; i < response.length; i++) {
                 var element = response[i]
                 html += '<div class="ebooth_cnt js-ebooth_cnt" data-id="' + element.id + '">'
-                html += '    <img src="' + load_url + element.photo_1 + '" alt="'+element.name+'">'
+                html += '    <img src="' + load_url + element.photo_1 + '" alt="'+element.name+'">'//load_url : 랜던하게 배정된 홈페이지 url 
                 html += '</div>'
             }
             document.querySelector('.js-ebooth_list').innerHTML = html
@@ -630,25 +630,31 @@ var ListModule = (function () {
     }
 
     function showEbooth() {
-        var this_id = this.getAttribute('data-id');
+        var this_id = this.getAttribute('data-id');//ebooth 한개 선택시 적용될 id
+        // console.log("showEbooth thid__id : ", this_id);
         var settings = {
             "url": "/api/v1/ebooth/"+this_id,
             "method": "GET",
             "timeout": 0
         };
-
+        
         $.ajax(settings).done(function (response) {
-            var href_home_url = response.homepage
+            console.log("ebooth response: ", response);
+            // console.log("response.photo_1", response.photo_1);
+            var href_home_url = response.homepage//ebooth 각 홈페이지
+            // console.log("load_url: ", load_url);
+
+            //홈페이지 url에 http://가 없고 https://가 없으면? http:// +홈페이지 url 이고 아니면 넘겨받은 홈페이지 url이다
             href_home_url = (href_home_url.indexOf('http://') ==-1 && href_home_url.indexOf('https://') ==-1) ? 'http://'+href_home_url : href_home_url
             // var href_sns_url = response.sns
             // href_sns_url = (href_sns_url.indexOf('http://') == -1) ? 'http://'+href_sns_url : href_sns_url
-            var pop_html = ''
+            var pop_html = ''//ebooth 상세보기 팝업창
             // pop_html += '<div class="ebooth_logo"><img src="'+load_url+response.photo_1+'" alt="'+response.name+'"></div>'
             pop_html += '<div class="ebooth_info_wrap">'
             pop_html += '    <div>'
             pop_html += '        <div>'
-            pop_html += (response.homepage != '') ? ' <a href="'+href_home_url+'" target="_blank">' : ''
-            pop_html += '       <img src="'+load_url+response.photo_1+'" alt="'+response.name+'">'
+            pop_html += (response.homepage != '') ? ' <a href="'+href_home_url+'" target="_blank">' : ''//_blank 새 윈도우 창을 열어서 웹페이지 열기 기존의 창은 그대로 남겨져 있다
+            pop_html += '       <img src="'+load_url+response.photo_1+'" alt="'+response.name+'">'//alt : img의 주소가 잘못 되었거나 이미지를 불러오지 못했을 때 alt속성의 이미지를 대체 한다
             pop_html += (response.homepage != '') ? ' </a>' : ''
             pop_html += '       </div>'
             pop_html += '    </div>'
@@ -732,9 +738,9 @@ var ListModule = (function () {
             // pop_html += '</div>'
             // pop_html += '    </div>'
             // pop_html += '</div>'
-            pop_html += (response.desc != '') ? '<div class="ebooth_html">'+response.desc+'</div>' : ''
+            pop_html += (response.desc != '') ? '<div class="ebooth_html">'+response.desc+'</div>' : ''//ebooth 팝업창 전체 디자인
             // pop_html += '<div class="ebooth_html">'+response.desc+'</div>' //추후 html content
-            document.querySelector('.js-ebooth_content').innerHTML = pop_html
+            document.querySelector('.js-ebooth_content').innerHTML = pop_html//js-ebooth_content영역에 추가
             // if(is_video == 'pdf'){
             //     eboosh_bx_slider = $('.js-ebooth_slide').bxSlider({
             //         slideHeight: 300,
@@ -742,7 +748,7 @@ var ListModule = (function () {
             //         touchEnabled:false
             //     })
             // }
-            MainModule.popVerticalMiddle(1);
+            MainModule.popVerticalMiddle(1);// 0은 eposter index_type, 1은 ebooth index_type에 해당된다
         });
     }
 

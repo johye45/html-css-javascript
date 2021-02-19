@@ -1,19 +1,85 @@
-var DEFAULT_START_TIME = '2020-11-29 09:00:00'
-var DEFAULT_END_TIME = '2020-12-09 02:00:00'
-var ACCESS_USER_ARR = [
-    {"name" : '서진철',"phone" : "01044556588"},
-    {"name" : '김정은',"phone" : "01095271710"},
-    {"name" : '박진곤',"phone" : "01088834359"},
-    {"name" : '이윤주',"phone" : "01024199642"},
-    {"name" : '김선재',"phone" : "01046466423"},
-    {"name" : '이규복',"phone" : "01040852871"},
-    {"name" : '김종엽',"phone" : "0103743546"},
-    {"name" : '백상현',"phone" : "01062806490"},
-    {"name" : '허중보',"phone" : "01080079099"},
-    {"name" : '김우식',"phone" : "01037139042"},
-    {"name" : '김은주',"phone" : "01099798717"},
-    {"name" : '김보희',"phone" : "01067221121"},
-    {"name" : '강효진',"phone" : "01073718612"}
+var FLOATING_BANNER_ARR = [
+
+]
+var FOTTER_BANNER_ARR = [
+    {
+        'name' : '덴탈아리랑',
+        'photo_1' : './static/images/footer/logo_01.png',
+        'link' : '#', //클릭시 넘어가는 링크
+        'order' : 10
+    },
+    {
+        'name' : '건치',
+        'photo_1' : './static/images/footer/logo_02.png',
+        'link' : '#',
+        'order' : 20
+    },
+    {
+        'name' : 'dentin',
+        'photo_1' : './static/images/footer/logo_03.png',
+        'link' : '#',
+        'order' : 30
+    },
+    {
+        'name' : '덴탈이슈',
+        'photo_1' : './static/images/footer/logo_04.png',
+        'link' : '#',
+        'order' : 40
+    },
+    {
+        'name' : '덴탈포커스',
+        'photo_1' : './static/images/footer/logo_05.png',
+        'link' : '#',
+        'order' : 50
+    },
+    {
+        'name' : '구애보',
+        'photo_1' : './static/images/footer/logo_06.jpg',
+        'link' : '#',
+        'order' : 60
+    },
+    {
+        'name' : '덴탈투데이',
+        'photo_1' : './static/images/footer/logo_07.png',
+        'link' : '#',
+        'order' : 70
+    },
+    {
+        'name' : 'seminar biz',
+        'photo_1' : './static/images/footer/logo_08.png',
+        'link' : '#',
+        'order' : 80
+    },
+    {
+        'name' : '치의신보',
+        'photo_1' : './static/images/footer/logo_09.png',
+        'link' : '#',
+        'order' : 90
+    },
+    {
+        'name' : 'DenfoLine',
+        'photo_1' : './static/images/footer/logo_10.png',
+        'link' : '#',
+        'order' : 100
+    },
+    {
+        'name' : '치과신문',
+        'photo_1' : './static/images/footer/logo_11.png',
+        'link' : '#',
+        'order' : 110
+    },
+    {
+        'name' : '치과의사신문',
+        'photo_1' : './static/images/footer/logo_12.png',
+        'link' : '#',
+        'order' : 120
+    },
+    {
+        'name' : 'DENTIST',
+        'photo_1' : './static/images/footer/logo_13.png',
+        'link' : '#',
+        'order' : 130
+    }
 ]
 var MainModule = (function () {
     var $root
@@ -21,7 +87,7 @@ var MainModule = (function () {
         $root = $('.wrap');
         eventBind();
         checkIsMobile();
-        startBxslider();
+        settingFooterSlider();
         // getMyInfo();
     }
 
@@ -48,7 +114,6 @@ var MainModule = (function () {
     //     "top": newPosition
     //   }, 500);
     // }).scroll();
-    
 
     function closePopEvent() {
         $('.pop_bg').hide();
@@ -131,18 +196,36 @@ var MainModule = (function () {
         }
     }
 
+    function settingFooterSlider(){
+        console.log('test')
+        var bx_el = $('.js-bx_wrap')
+        if(bx_el.length > 0){
+            var html = ''
+            for(var i=0; i<FOTTER_BANNER_ARR.length;i++){
+                var el = FOTTER_BANNER_ARR[i]
+                html += '<div>'
+                // html += '    <a href="'+el.link+'" target="_blank">'
+                html += '        <img src="'+el.photo_1+'" alt="'+el.name+'">'
+                // html += '    </a>'
+                html += '</div>'
+            }
+            bx_el.html(html)
+            startBxslider()
+        }
+    }
+
     function startBxslider(){
         var bx_el = $('.js-bx_wrap')
-        if(bx_el){
-            var n = $(".js-bx_wrap div").length;
-            bx_el.bxSlider({
-                minSlides: 5,
-                ticker: true,
-                slideWidth: 'auto',
-                slideMargin: 10,
-                speed: 5000 * n
-            })
-        }
+        var n = $(".js-bx_wrap div").length;
+        bx_el.bxSlider({
+            minSlides: 3,
+            // maxSlides: 4,
+            ticker: true,
+            slideWidth: 'auto',
+            slideMargin: 10,
+            speed: 5000 * n,
+            tickerHover: true
+        })
     }
 
     function setLoadHtml(){
@@ -169,12 +252,25 @@ var MainModule = (function () {
         target_el.html(html)
     }
 
+    function calcWatchTime(sec){
+        var TOTAL_TIME = sec
+        var hour = String(parseInt(TOTAL_TIME / 3600)); //1 h = 3600 sec
+        var min = String(parseInt((TOTAL_TIME % 3600) / 60));
+        var sec = String(TOTAL_TIME % 60);
+        hour = (hour.length<2) ? '0' + hour : hour;
+        min = (min.length<2) ? '0' + min : min;
+        sec = (sec.length<2) ? '0' + sec : sec;
+        var return_val = hour+':'+min+':'+sec
+        document.querySelector('.js-user_time').innerHTML = return_val
+    }
+
     return {
         init: init,
         closePopEvent: closePopEvent,
         popVerticalMiddle: popVerticalMiddle,
         getUrlParameter: getUrlParameter,
-        setLoadHtml: setLoadHtml
+        setLoadHtml: setLoadHtml,
+        calcWatchTime: calcWatchTime
     };
 })();
 (function () {

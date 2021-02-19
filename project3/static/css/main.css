@@ -401,18 +401,20 @@ border-collapse: separate; display: table; width: 100%;}
 
 /* print 페이지 */
 .print_wrap{padding: 40px;}
-.print_content{background-color: #fff; padding: 60px; width: 21cm;height: 29.7cm; margin: auto;}
+.print_content{background-color: #fff; padding: 60px; width: 21cm;height: 29.7cm; margin: auto;}/*A4사이즈*/
 .print_content *{margin: 0;}
 .page_border{border: 3px solid #e9df4f; height: 100%; padding: 100px 48px 60px 48px; background:url('../images/logo_alpha.png') center no-repeat; 
   background-size: 350px;position: relative;}
-.print_content h1{font-size: 5rem;letter-spacing: 0.9rem;}
-.print_content ul{text-align: left; margin: 120px 40px; font-size: 1.8rem; list-style: none; line-height: 2; padding-left: 0;}
+.print_content h1{font-size: 5rem;letter-spacing: 0.9rem;}/*수료증, 영수증 큰 글씨*/
+.print_content ul{text-align: left; margin: 120px 40px; font-size: 1.8rem; list-style: none; line-height: 2; padding-left: 0;}/*성함, 면허번호, 기간 감싸는 ul태그*/
 .print_content p{font-size: 2.3rem; line-height: 1.5;}
 .print_content li span{display: table-cell;}
 .print_content li span:first-child{min-width: 155px; word-break: keep-all;}
 .print_content li span:first-child::after{content: ':'; margin: 0 20px;}
 .print_content li:nth-of-type(1) span:first-child,
 .print_content li:nth-of-type(3) span:first-child,
+/*word-spacing : 단어와 단어사이, 태그와 태그 사이의 거리를 설정한다
+  성 함 : 띄어쓰기 되어잇는 경우에 각각 한 단어로 인식해서 거리를 설정할 수 있다*/
 .print_content li:nth-of-type(4) span:first-child{word-spacing: 3.8em;}
 .print_content li:nth-of-type(2) span:first-child{word-spacing: 0.45em;}
 .print_content li span:last-child{letter-spacing: .1em;}
@@ -427,10 +429,12 @@ border-collapse: separate; display: table; width: 100%;}
 .print_bot .bot_info{margin-bottom: 16px;margin-top: 120px;font-size: 1.4rem;}
 .print_logo{position: absolute;left: 20px;top: -24px;width: 150px;padding: 0 8px; height: 40px; background: url('../images/logo_altsoft.png') center no-repeat;
 background-size: cover;}
+
 @page {
     size: A4;
     margin: 0;
 }
+
 @media print {
   html, body {
     width: 210mm;

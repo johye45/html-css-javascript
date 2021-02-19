@@ -79,7 +79,7 @@ var MainModule = (function () {
 
     function logoutUser() {
         if (confirm('로그아웃 하시겠습니까?')) {
-            location.href = './result.html';
+            location.href = './result.html';//로그아웃시 result.html 페이지로 이동하기 -->수료증 출력
         }
     }
 

@@ -25,6 +25,7 @@ var ResultModule = (function () {
 
         $.ajax(settings).done(function (response) {
             console.log(response);
+            console.log("response.data")
             var server_time = response.server_time
             if(response.app_id != 4){
                 alert('이벤트에 연결되어있지 않은 회원입니다.');
@@ -50,14 +51,14 @@ var ResultModule = (function () {
                 user_cnt_el.innerText = user_count_number;
             }
             TOTAL_TIME = Number(response.total_watch_time);
-            document.querySelector('.js-result_info').innerHTML = '<div><div>' + response.name + '</div></div><div><div>' + response.license_number + '</div></div>'
+            document.querySelector('.js-result_info').innerHTML = '<div><div>' + response.name + '</div></div><div><div>' + response.license_number + '</div></div>'//성함, 면허번호
             var hour = parseInt(TOTAL_TIME / 3600);
             var min = parseInt((TOTAL_TIME % 3600) / 60);
             var sec = TOTAL_TIME % 60;
-            document.getElementById('duration').innerHTML = hour + '시간 ' + min + '분 ' + sec + '초'
+            document.getElementById('duration').innerHTML = hour + '시간 ' + min + '분 ' + sec + '초'//총 시간
             console.log(IS_COMPLETE_TIME,TOTAL_TIME)
-            if (TOTAL_TIME >= IS_COMPLETE_TIME) {
-                document.querySelector('.js-result_btn_wrap button[data-type="1"]').classList.add('active');
+            if (TOTAL_TIME >= IS_COMPLETE_TIME) {//접속자가 본 영상 시청 시간이  IS_COMPLETE_TIME보다 크면 수료증 출력이 가능
+                document.querySelector('.js-result_btn_wrap button[data-type="1"]').classList.add('active');//수료증 출력
                 // $('.js-result_btn_wrap').append('<button data-type="1">수료증 출력</button>')
             }
         }).fail(function (response) {
@@ -79,7 +80,8 @@ var ResultModule = (function () {
                 "method": "GET",
                 "timeout": 0,
             };
-
+            
+            //로그아웃 > 확인 > index.html 페이지로 이동
             $.ajax(settings).done(function (response) {
                 console.log(response);
                 location.replace('./index.html');
